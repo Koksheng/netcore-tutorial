@@ -1,0 +1,2 @@
+D:\work\Self learn\net6\async1\async1\bin\Debug\async1.exe.config
+D:\work\Self learn\net6\async1\async1\obj\Debug\async1.csprojResolveAssemblyReference.cache

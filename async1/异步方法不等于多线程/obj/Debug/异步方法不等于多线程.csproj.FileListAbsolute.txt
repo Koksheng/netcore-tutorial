@@ -1,0 +1,2 @@
+D:\work\Self learn\net6\async1\异步方法不等于多线程\bin\Debug\异步方法不等于多线程.exe.config
+D:\work\Self learn\net6\async1\异步方法不等于多线程\obj\Debug\异步方法不等于多线程.csprojResolveAssemblyReference.cache
