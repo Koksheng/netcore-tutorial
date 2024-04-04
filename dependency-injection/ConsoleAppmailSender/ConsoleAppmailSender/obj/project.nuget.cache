@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "hnVSYU1EgGxdPa7nAWAxO64fEAUkouZbrbtjK21pOMO6ku/ueY+0H2pZh1VYmdeNDK5b47Pgpah5KlI7h3YtTA==",
+  "success": true,
+  "projectFilePath": "/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/ConsoleAppmailSender/ConsoleAppmailSender.csproj",
+  "expectedPackageFiles": [
+    "/Users/guekoksheng/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/Users/guekoksheng/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

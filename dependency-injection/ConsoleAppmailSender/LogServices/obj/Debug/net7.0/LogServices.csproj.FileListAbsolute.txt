@@ -1,0 +1,12 @@
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/bin/Debug/net7.0/LogServices.deps.json
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/bin/Debug/net7.0/LogServices.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/bin/Debug/net7.0/LogServices.pdb
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/LogServices.csproj.AssemblyReference.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/LogServices.GeneratedMSBuildEditorConfig.editorconfig
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/LogServices.AssemblyInfoInputs.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/LogServices.AssemblyInfo.cs
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/LogServices.csproj.CoreCompileInputs.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/LogServices.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/refint/LogServices.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/LogServices.pdb
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/dependency-injection/ConsoleAppmailSender/LogServices/obj/Debug/net7.0/ref/LogServices.dll
