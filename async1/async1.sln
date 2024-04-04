@@ -11,6 +11,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "线程切换1", "线程切�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "异步方法不等于多线程", "异步方法不等于多线程\异步方法不等于多线程.csproj", "{D349468A-1B0F-4AD4-B0BC-01C510288A99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "取消1", "取消1\取消1.csproj", "{B5FA275B-3C3C-4A1E-BDB5-8527649F032F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnetcorecancel1", "aspnetcorecancel1\aspnetcorecancel1.csproj", "{C38A2F3D-306F-47EC-ACB9-FCADD8567B3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhenAll1", "WhenAll1\WhenAll1.csproj", "{148959F8-6477-4E9D-9A6B-2F5CE36D79AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yibu2", "yibu2\yibu2.csproj", "{E7FE9139-7D81-47B9-BA5D-3D8C7C960FBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "linq扩展方法1", "linq扩展方法1\linq扩展方法1.csproj", "{F418AF3F-799D-43CF-9615-03F59BAE65F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ioc1", "ioc1\ioc1.csproj", "{0CFC787C-35F1-4789-896C-2153DD44D01F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +45,30 @@ Global
 		{D349468A-1B0F-4AD4-B0BC-01C510288A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D349468A-1B0F-4AD4-B0BC-01C510288A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D349468A-1B0F-4AD4-B0BC-01C510288A99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5FA275B-3C3C-4A1E-BDB5-8527649F032F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5FA275B-3C3C-4A1E-BDB5-8527649F032F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5FA275B-3C3C-4A1E-BDB5-8527649F032F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5FA275B-3C3C-4A1E-BDB5-8527649F032F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C38A2F3D-306F-47EC-ACB9-FCADD8567B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C38A2F3D-306F-47EC-ACB9-FCADD8567B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C38A2F3D-306F-47EC-ACB9-FCADD8567B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C38A2F3D-306F-47EC-ACB9-FCADD8567B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148959F8-6477-4E9D-9A6B-2F5CE36D79AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148959F8-6477-4E9D-9A6B-2F5CE36D79AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148959F8-6477-4E9D-9A6B-2F5CE36D79AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148959F8-6477-4E9D-9A6B-2F5CE36D79AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7FE9139-7D81-47B9-BA5D-3D8C7C960FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7FE9139-7D81-47B9-BA5D-3D8C7C960FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7FE9139-7D81-47B9-BA5D-3D8C7C960FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7FE9139-7D81-47B9-BA5D-3D8C7C960FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F418AF3F-799D-43CF-9615-03F59BAE65F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F418AF3F-799D-43CF-9615-03F59BAE65F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F418AF3F-799D-43CF-9615-03F59BAE65F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F418AF3F-799D-43CF-9615-03F59BAE65F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CFC787C-35F1-4789-896C-2153DD44D01F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CFC787C-35F1-4789-896C-2153DD44D01F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CFC787C-35F1-4789-896C-2153DD44D01F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CFC787C-35F1-4789-896C-2153DD44D01F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

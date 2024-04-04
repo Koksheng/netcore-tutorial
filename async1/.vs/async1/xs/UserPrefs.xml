@@ -1,0 +1,42 @@
+﻿<Properties StartupConfiguration="{0CFC787C-35F1-4789-896C-2153DD44D01F}|Default">
+  <MonoDevelop.Ide.ItemProperties.aspnetcorecancel1 PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.yibu2 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ioc1/Program.cs">
+    <Files>
+      <File FileName="取消1/Program.cs" />
+      <File FileName="WhenAll1/Program.cs" />
+      <File FileName="yibu2/Program.cs" />
+      <File FileName="linq扩展方法1/Program.cs" Line="240" Column="1" />
+      <File FileName="linq扩展方法1/Employee.cs" />
+      <File FileName="linq扩展方法1/Dog.cs" />
+      <File FileName="ioc1/Program.cs" Line="13" Column="76" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="async1" expanded="True">
+            <Node name="ioc1">
+              <Node name="Dependencies" expanded="True">
+                <Node name="PackageDependencies" expanded="True">
+                  <Node name="Microsoft.Extensions.DependencyInjection" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/Program.cs" relfile="WhenAll1/Program.cs" line="10" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.ioc1 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.WhenAll1 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.linq扩展方法1 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.取消1 PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>

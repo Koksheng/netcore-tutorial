@@ -1,0 +1,15 @@
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/bin/Debug/net7.0/yibu2
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/bin/Debug/net7.0/yibu2.deps.json
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/bin/Debug/net7.0/yibu2.runtimeconfig.json
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/bin/Debug/net7.0/yibu2.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/bin/Debug/net7.0/yibu2.pdb
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.csproj.AssemblyReference.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.GeneratedMSBuildEditorConfig.editorconfig
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.AssemblyInfoInputs.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.AssemblyInfo.cs
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.csproj.CoreCompileInputs.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/refint/yibu2.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.pdb
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/yibu2.genruntimeconfig.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/yibu2/obj/Debug/net7.0/ref/yibu2.dll

@@ -1,0 +1,15 @@
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/bin/Debug/net7.0/WhenAll1
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/bin/Debug/net7.0/WhenAll1.deps.json
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/bin/Debug/net7.0/WhenAll1.runtimeconfig.json
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/bin/Debug/net7.0/WhenAll1.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/bin/Debug/net7.0/WhenAll1.pdb
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.csproj.AssemblyReference.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.GeneratedMSBuildEditorConfig.editorconfig
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.AssemblyInfoInputs.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.AssemblyInfo.cs
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.csproj.CoreCompileInputs.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/refint/WhenAll1.dll
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.pdb
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/WhenAll1.genruntimeconfig.cache
+/Users/guekoksheng/Projects/net6 yangzhongke/netcore-tutorial/async1/WhenAll1/obj/Debug/net7.0/ref/WhenAll1.dll
