@@ -31,3 +31,6 @@ Dependency injection helps in creating loosely coupled components by providing d
   > Constructor injection is the most common type of dependency injection. In constructor injection, we inject the dependency into the class constructor.
 - Property Injection
   > Property Injection is less common than constructor injection. In property injection, we inject the dependency into a property of the class.
+
+
+[Link to Reference DI in .Net Core](https://www.c-sharpcorner.com/article/dependency-injection-in-net-core/)
