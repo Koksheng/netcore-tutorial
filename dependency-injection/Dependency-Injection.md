@@ -34,3 +34,44 @@ Dependency injection helps in creating loosely coupled components by providing d
 
 
 [Link to Reference DI in .Net Core](https://www.c-sharpcorner.com/article/dependency-injection-in-net-core/)
+
+
+
+## Dependency Injection **Extension**
+1. role
+   1. Client 
+   2. Service
+
+`LogServices (Service)`
+
+```
+namespace Microsoft.Extensions.DependecyInjection
+{
+    public static class ConsoleLogExtensions
+    {
+        public static void AddConsoleLog(this IServiceCollection services)
+        {
+            services.AddScoped<ILogProvider, ConsoleLogProvider>();
+        }
+    }
+}
+```
+
+`ConsoleAppMainlSender (Client)`
+
+```
+namespace ConsoleAppMailSender
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ServiceCollection services = new ServiceCollection();
+            // original method
+            services.AddScoped<ILogProvider, ConsoleLogProvider>();
+            // extension method, can straight away get the hint
+            services.AddConsoleLog();
+        }
+    }
+}
+```
