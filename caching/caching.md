@@ -136,3 +136,145 @@ public async Task<ActionResult<Book?>> GetBookById(long id)
     Console.WriteLine($"GetOrCreateAsync result{b}");
 }
 ``` 
+
+# Cache Penetration 缓存穿透
+This happen when the key doesn't exist in the cache or the database. This problem creates a lot of pressuere on both the cache and the database
+
+Example:
+
+ code below will keep executing by malicious(恶意) request, if the cacheKey is a fake key, doesnt exist in both cache and db.
+
+```
+string cacheKey = "Book"+id; // 缓存键
+Book? b = memCache.Get<Book?>(cacheKey);
+if(b==null) //如果缓存中没有数据
+{
+    // 查数据库，然后写入缓存
+    b = await.dbCtx.Books.FindAsync(id);
+    memCache.Set(cacheKey,b);
+}
+```
+
+Solution:
+
+`GetOrCreateAsyns` will store `null` value as legal value in cache. So that cache will return null when next query without going to DB again.
+
+```
+string cacheKey = "Book"+id; // 缓存键
+Book? b = memCache.Get<Book?>(cacheKey);
+var book = await memCache.GetOrCreateAsync(cacheKey, async(e) =>{
+    var b = await.dbCtx.Books.FindAsync(id);
+    logger.LogInformation("数据库查询：{0}"， b==null? "为空"："不为空")；
+    return b;
+});
+logger.LogInformation("Demo5执行结束：{0}"， book==null? "为空"："不为空")；
+```
+
+# Cache Avalanche 缓存雪崩
+This happen when a lots of cached data expire at the same time or the cache service is down and all suddenlly search these data at DB, cause high load to the DB layer and impact the performance.
+
+Solution:
+
+set a random expiring date
+```
+public async Task<ActionResult<Book?>> GetBookById(long id)
+{
+    Console.WriteLine($"Start to Execute GetBookById,id={id}");
+    Book? b = await memCache.GetOrCreateAsync("Book"+id, async(e) => {
+        Console.WriteLine($"Cant find in cache, search in DB, id={id}");
+        e.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(Random.Shared.Next(10,15)); // set a random expiring second, 10 is min second, 15 is max second
+        return await MyDbContext.GetByIdAsync(id);
+    });
+    Console.WriteLine($"GetOrCreateAsync result{b}");
+}
+``` 
+
+# Extension for Cache Helper by YangZhongKe
+
+1. `IQueryable`, `IEnumerable` might encounter delay issues. For example, when `IQueryable`, `IEnumerable` object is initialized and point to a cache value, it doesn't immediately execute the query. Instead, it executes the query when it begins to loop. However, if the object pointed to in the cache has been released by that time, it will lead to a failed execution. Therefore, these two must be banned in the cache.
+
+Solution:
+
+Nuget package: Zack.ASPNETCore 
+
+[Link to Github MemoryCacheHelper](https://github.com/yangzhongke/NETBookMaterials/blob/main/%E6%9C%80%E5%90%8E%E5%A4%A7%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81/YouZack-VNext/Zack.ASPNETCore/MemoryCacheHelper.cs)
+
+[Link to Video Explanation](https://www.bilibili.com/video/BV1pK41137He?p=126&vd_source=0db8da3630570b65a3001fb44134ff14)
+
+`IMemoryCacheHelper`
+```
+public interface IMemoryCacheHelper
+{
+    TResult? GetOrCreate<Result>(string cacheKey, Func<ICacheEntry, TResult?>valueFactory, int expireSeconds);
+    Task<TResult?> GetOrCreateAsync<TResult>(string cacheKey, Func<ICacheEntry, Task<TResult?>> valueFactury, int expireSeconds);
+    void Remove(string cacheKey);
+}
+```
+
+```
+public async Task<ActionResult<Book?>> Test2(long id)
+{
+    var b = await memCacheHelper.GetOrCreateAsync("Book"+id, async(e) => {
+        return await MyDbContext.GetByIdAsync(id);
+    }, 10);
+    if(b==null){
+        return NotFound("Not Exists");
+    }
+    else{
+        return b;
+    }
+}
+```
+
+# Distributed Cache
+1. Frequently use by distributed cache server: `Redis`, `Memcached`.
+2. .Net Core provide interface `IDistributedCache` similar to `IMemoryCache`.
+3. Difference between **Distributed Cache** and **Memory Cache**: 
+   > **Distributed Cache** store their value as byte[], so we need to convert into byte, and also provide some string type storing extension method.
+
+[Link to Video](https://www.bilibili.com/video/BV1pK41137He?p=127&spm_id_from=pageDriver&vd_source=0db8da3630570b65a3001fb44134ff14)
+
+## Redis (How to use)
+1. Nuget install Microsoft.Extensions.Caching.StackExchangeRedis
+2. 
+```
+builder.Services.AddStackExchangeRedisCache(options=>{
+    options.Configuration = "localhost";
+    options.InstanceName = "yzk_";
+})
+```
+
+```
+private readonly IDistributedcache distCache;
+public TestController(IDistributedcache distCache)
+{
+    this.distCache = distCache;
+}
+```
+
+```
+[HttpGet]
+public async Task<ActionResult<Book?>> Test3(long id)
+{
+    Book? book;
+    string? s = await disCache.GetStringAsync("Book"+id);
+    if(s==null)
+    {
+        Console.WriteLine($"Take from DB id={id}");
+        book = await MyDbContext.GetByIdAsync(id);
+        await disCache.SetStringAsync("Book"+id, JsonSerializer.Serialize(book));
+    }
+    else
+    {
+        Console.WriteLine($"Take from Cache id={id}");
+        book = JsonSerialize.Deserialze<Book?>(s);
+    }
+    
+    if(b==null){
+        return NotFound("Not Exists");
+    }
+    else{
+        return b;
+    }
+}
+```
