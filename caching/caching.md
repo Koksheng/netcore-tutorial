@@ -189,7 +189,7 @@ public async Task<ActionResult<Book?>> GetBookById(long id)
 }
 ``` 
 
-# Extension for Cache Helper by YangZhongKe
+# Extension for Cache Helper by YangZhongKe (MemoryCacheHelper)
 
 1. `IQueryable`, `IEnumerable` might encounter delay issues. For example, when `IQueryable`, `IEnumerable` object is initialized and point to a cache value, it doesn't immediately execute the query. Instead, it executes the query when it begins to loop. However, if the object pointed to in the cache has been released by that time, it will lead to a failed execution. Therefore, these two must be banned in the cache.
 
@@ -245,8 +245,8 @@ builder.Services.AddStackExchangeRedisCache(options=>{
 ```
 
 ```
-private readonly IDistributedcache distCache;
-public TestController(IDistributedcache distCache)
+private readonly IDistributedCache distCache;
+public TestController(IDistributedCache distCache)
 {
     this.distCache = distCache;
 }
@@ -277,4 +277,62 @@ public async Task<ActionResult<Book?>> Test3(long id)
         return b;
     }
 }
+```
+
+## Cache Penetration 缓存穿透 (Distributed Cache)
+
+The code above `GetStringAsync` already solved the **Cache Penetration 缓存穿透**, cause although value is **null**, it will also save into Redis with value null.
+
+## Cache Avalanche 缓存雪崩 (Distributed Cache)
+
+Can solve **Cache Avalanche 缓存雪崩** by using `DistributedCacheHelper` to set the expiration timming.
+
+
+# Extension for Cache Helper by YangZhongKe (DistributedCacheHelper)
+
+
+[Link to Github DistributedCacheHelper](https://github.com/yangzhongke/NETBookMaterials/blob/main/%E6%9C%80%E5%90%8E%E5%A4%A7%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81/YouZack-VNext/Zack.ASPNETCore/DistributedCacheHelper.cs)
+
+[Link to Video Explanation](https://www.bilibili.com/video/BV1pK41137He?p=128&vd_source=0db8da3630570b65a3001fb44134ff14)
+
+```
+public interface IDistributedCacheHelper
+{
+    TResult? GetOrCreate<TResult>(string cacheKey, Func<DistributedCacheEntryOptions, TResult?> valueFactory, int expireSeconds);
+    Task<TResult?> GetOrCreateAsync<TResult>(string cacheKey, Func<DistributedCacheEntryOptions, Task<TResult?>> valueFactory, int expireSeconds);
+    void Remove(string cacheKey);
+    Task RemoveAsync(string cacheKey);
+}
+```
+
+`Program.cs`
+```
+builder.Services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>(); 
+```
+
+`TestController.cs`
+```
+private readonly IDistributedCacheHelper distCacheHelper;
+public TestController(IDistributedCacheHelper distCacheHelper)
+{
+    this.distCacheHelper = distCacheHelper;
+}
+
+[HttpGet]
+public async Task<ActionResult<Book?>> Test6(long id)
+{
+    var book = await distCacheHelper.GetOrCreateAsync("Book"+id, async (e) => {
+        e.SlidingExpiration = TimeSpan.FromSeconds(5);
+        var book = await MyDbContext.GetByIdAsync(id);
+        return book;
+    },20);
+
+    if(book==null){
+        return NotFound("Not Exists");
+    }
+    else{
+        return book;
+    }
+}
+
 ```
