@@ -345,8 +345,11 @@ public async Task<ActionResult<Book?>> Test6(long id)
 is a delegate or a function that encapsulates the logic for creating or retrieving a value. It takes any required input parameters and returns the desired value.
 
 **Deferred Execution 延迟执行**
+
 One of the key features of a `valueFactory` is that it represents deferred execution. The logic inside the `valueFactory` is not executed until it's needed. This allows for efficient resource utilization and lazy loading of data.
 
+
+**Definition with example**
 
 `Func<DistributedCacheEntryOptions, Task<TResult?>> valueFactory` 
 
