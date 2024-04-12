@@ -19,3 +19,74 @@ From DI get the DB Context, then for loop DB Context, call the `SaveChangesAsync
 
 
 ## How to Use
+`UnitOfWorkAttribute`
+
+```
+namespace UserMgr.WebAPI
+{
+    [AttributeUsage(AttributeTargets.Method)]
+    public class UnitOfWorkAttribute:Attribute
+    {
+        public Type[] DbContextTypes{ get; init; }
+        public UnitOfWorkAttribute(params Type[] dbContextTypes)
+        {
+            this.DbContextTypes = dbContextTypes;
+        }
+    }
+}
+```
+
+`UnitOfWorkFilter`
+
+```
+namespace UserMgr.WebAPI
+{
+    public class UnitOfWorkFilter:IAsyncActionFilter
+    {
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            var result = await next();
+            if(result.Exception!=null) // 只有Action执行成功，才自动调用SaveChanges
+            {
+                return;
+            }
+            var actionDesc = context.ActionDescriptor as ControllerActionDescriptor;
+            if(actionDesc == null)
+            {
+                return;
+            }
+            var uowAttr = actionDesc.MethodInfo.GetCustomAttribute<UnitOfWorkAttribute>();
+            if(uowAttr==null)
+            {
+                return;
+            }
+            foreach(var dbCtxType in uowAttr.DbContextTypes)
+            {
+                var dbCtx = context.HttpContext.RequestServices.GetService(dbCtxType) as DbContext; // 管DI要DbContext实例
+                if(dbCtx!=null)
+                {
+                    await dbCtx.SaveChangesAsync();
+                }
+            }
+        }
+        
+    }
+}
+```
+
+`Program.cs` (register)
+```
+builder.Services.Configure<MvcOptions>(o=>{
+    o.Filters.Add<UnitOfWorkFilter>();
+});
+```
+
+`WeatherForecastController`
+```
+[HttpGet(Name="GetWeatherForecast")]
+[UnitOfWork(typeof(UserDbContext))] // <----- add this into Controller
+public IEnumerable<WeatherForecast> Get()
+{
+
+}
+```

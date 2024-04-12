@@ -336,3 +336,94 @@ public async Task<ActionResult<Book?>> Test6(long id)
 }
 
 ```
+
+
+# valueFactory
+
+**Definition**
+
+is a delegate or a function that encapsulates the logic for creating or retrieving a value. It takes any required input parameters and returns the desired value.
+
+**Deferred Execution 延迟执行**
+One of the key features of a `valueFactory` is that it represents deferred execution. The logic inside the `valueFactory` is not executed until it's needed. This allows for efficient resource utilization and lazy loading of data.
+
+
+`Func<DistributedCacheEntryOptions, Task<TResult?>> valueFactory` 
+
+This delefate type represents a method that takes an `DistributedCacheEntryOptions` object as input and returns a nullable `TResult`. In other words, it's a function that can create a value of type `TResult` based on some logic and the information provided by the cache entry.
+
+**Usage Explanation**
+- When u call the `GetOrCreateAsync` method, u pass a function (represented by `valueFactory`) as an argument. This function will be invoked by the `GetOrCreateAsync` method if the value corresponding to the `cacheKey` doesnt exist in the cache.
+- The `valueFactory` function's responsibility is to generate the value that needs to be cached. It can use the provided `DistributedCacheEntryOptions` to set various properties of the cache entry, such as expiration time, priority, etc.
+- After the `valueFactory` function completes its execution, the value it generates (of type `TResult`) is stored in the cache entry and returned by the `GetOrCreateAsync` method.
+
+**Example**
+
+`1. Code from Zack.ASPNETCore DistributedCacheHelper.cs`
+```
+public async Task<TResult?> GetOrCreateAsync<TResult>(string cacheKey, Func<DistributedCacheEntryOptions, Task<TResult?>> valueFactory, int expireSeconds = 60)
+        {
+            string jsonStr = await distCache.GetStringAsync(cacheKey);
+            if (string.IsNullOrEmpty(jsonStr))
+            {
+                var options = CreateOptions(expireSeconds);
+                TResult? result = await valueFactory(options);
+                string jsonOfResult = JsonSerializer.Serialize(result,
+                    typeof(TResult));
+                await distCache.SetStringAsync(cacheKey, jsonOfResult, options);
+                return result;
+            }
+            else
+            {
+                await distCache.RefreshAsync(cacheKey);
+                return JsonSerializer.Deserialize<TResult>(jsonStr)!;
+            }
+        }
+```
+
+`2. TestController.cs` (call the `GetOrCreateAsync` method)
+```
+private readonly IDistributedCacheHelper distCacheHelper;
+public TestController(IDistributedCacheHelper distCacheHelper)
+{
+    this.distCacheHelper = distCacheHelper;
+}
+
+[HttpGet]
+public async Task<ActionResult<Book?>> Test6(long id)
+{
+    var book = await distCacheHelper.GetOrCreateAsync("Book"+id, async (e) => {
+        e.SlidingExpiration = TimeSpan.FromSeconds(5);
+        var book = await MyDbContext.GetByIdAsync(id);
+        return book;
+    },20);
+
+    if(book==null){
+        return NotFound("Not Exists");
+    }
+    else{
+        return book;
+    }
+}
+
+```
+
+`3. valueFactory` example
+```
+async (e) => {
+    return await MyDbContext.GetByIdAsync(id);
+}
+```
+Code above is the `valueFactory` that will be executed when the `distCache` cannot get the value.
+
+Lets break it down:
+
+`async (e) => { ... }`: This is a lambda expression defining an asynchronous function that takes an `DistributedCacheEntryOptions` parameter named e.
+
+`e.SlidingExpiration = TimeSpan.FromSeconds(5);`: This line sets the sliding expiration for the cache entry to 5 seconds.
+
+`var book = await MyDbContext.GetByIdAsync(id);`: This line represents an asynchronous operation that retrieves a book from the database by its `id`. Since it's an asynchronous operation, it returns a `Task<Book?>`.
+
+`return book`;: This line returns the retrieved book.
+
+The entire lambda expression `async (e) => { ... }` serves as the `valueFactory` function passed to the GetOrCreateAsync method. When invoked, this function will execute asynchronously to fetch the book from the database if it's not already cached, and then cache the result using the provided `DistributedCacheEntryOptions`.
