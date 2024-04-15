@@ -25,7 +25,7 @@ similar to `EF Core`'s `Fluent API` which we can validate the model by creating 
     ]
    ```
 
-4. `AddNewUserRequest`
+4. `AddNewUserRequest` model
    ```
     public class AddNewUserRequest
     {
@@ -36,6 +36,8 @@ similar to `EF Core`'s `Fluent API` which we can validate the model by creating 
     }
    ```
 5. NET Core build in validator `System.ComponentModel.DataAnnotations`
+   
+   example: `[MinLength(3)]`, `[Required]`, `[Compare(nameof(Password))]`
    ```
     using System.ComponentModel.DataAnnotations;
 
@@ -57,9 +59,9 @@ similar to `EF Core`'s `Fluent API` which we can validate the model by creating 
    Disadvantages of build in validator `System.ComponentModel.DataAnnotations`
    - model and db very tight couple
    - violation of the single responsibility principle 违反 单一职责原则 
-   - a lot of validation need to customize
+   - a lot of validation need to be customized
 
-5. `FluentValidation` library
+6. `FluentValidation` library
    ```
     using FluentValidation;
     namespace DataValudationdemo
@@ -77,7 +79,7 @@ similar to `EF Core`'s `Fluent API` which we can validate the model by creating 
     }
    ```
 
-6. validate if user already exist `UserManager<MyUser> userManager`
+7. validate if user already exist `UserManager<MyUser> userManager` for `UserName`
    ```
     using FluentValidation;
     namespace DataValudationdemo
@@ -89,6 +91,7 @@ similar to `EF Core`'s `Fluent API` which we can validate the model by creating 
                 RuleFor(x=>x.Email).NotNull().EmailAddress().WithMessage("Email must be legal").Must(x=>x.EndsWith("@gmail.com") || x.EndsWith("@hotmail.com")).WithMessage("Email only support gmail or hotmail");
                 
                 RuleFor(x=>x.UserName).NotNull().Length(3,10).MustAsync(async (x,_)=>await userManager.FindByNameAsync(x)==null).WithMessage(x=>$"UserName {x.UserName} already existed");
+
                 RuleFor(x=>x.Password).Equal(x=>x.Password2).WithMessage(x=>$"Password{x.Password} and {x.Password2} not same");
             }
         }
