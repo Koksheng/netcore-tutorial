@@ -12,7 +12,7 @@ store session id and user id
 
 # JWT (Json Web Token)
 1. JWT save login message (also known token) on the client side.
-2. To prevent client side use the fake jwt, the token stored on client side already experienced by signature handling, and the key of signature only server side will know. So everytime the server receive token from client side, have to check their signature first.
+2. To prevent client side use the fake jwt, the token stored on client side already encoded by signature handling, and the key of signature only server side will know. So everytime the server receive token from client side, have to check their signature first.
 3. How JWT achieve **Login**
    - Header
     ```
