@@ -142,7 +142,8 @@ public interface IDomainEvents
 ```
 public abstract class BaseEntity : IDomainEvents
 {
-    private readonly IList<INotification> events = new List<INotification>();
+    [NotMapped] // Ignore()
+    private IList<INotification> events = new List<INotification>();
     public void AddDomainEvent(INotification notif)
     {
         events.Add(notif);
@@ -234,17 +235,48 @@ public class User : BaseEntity
         public override Task<int> SaveChanesAsync(CancellationToken cancellationToken = default)
         {
             var domainEntities = this.ChangeTrackerEntries<IDomainEvents>().Where(x=>x.Entity.GetDomainEvents().Any()); // 获得所有含有未发布事件的实体对象
-            var domainEvents = domainEntities.SelectMany(x=>x.Entity.GetDomainEvents()).ToList(); 、、获得所有待发布消息
+            var domainEvents = domainEntities.SelectMany(x=>x.Entity.GetDomainEvents()).ToList(); // 获得所有待发布消息
             domainEntities.ToList().ForEach(entity=>entity.Entity.ClearDomainEvents());
             foreach(var domainEvent in domainEvents)
             {
                 await mediator.Publish(domainEvent);
             }
-            、、把消息的发布放到base.SaveChangesAsync()之前，可以保证领域事件响应代码中的事务操作和base.SaveChangeAsync中的代码在同一个事务中,实现强一致性事务
+            // 把消息的发布放到base.SaveChangesAsync()之前，可以保证领域事件响应代码中的事务操作和base.SaveChangeAsync中的代码在同一个事务中,实现强一致性事务
             return await base.SaveChangesAsync(acceptAllChangeOnSuccess, cancellationToken);
         }
     }
     
     ```
 
-7. `NewUserHandlers`
+7. `NewUserHandlers` something like suscriber
+   ```
+   using MediarR;
+   namespace MediarRTest2
+   {
+        public class NewUserHandlers : NotificationHandler<NewUserNotification>
+        {
+            proteced override void Handle(NewUserNotification notification)
+            {
+                Console.WriteLine("新建了用户"+notification.UserName);
+            }
+        }
+   }
+   ```
+8. `UserNameChangedHandlers` something like suscriber
+   ```
+   using MediarR;
+   namespace MediarRTest2
+   {
+        public class UserNameChangedHandlers : NotificationHandler<UserNameChangeNotification>
+        {
+            proteced override void Handle(UserNameChangeNotification notification)
+            {
+                Console.WriteLine($"用户名从{notification.OldUserName}变为了{notification.NewUserName}");
+            }
+        }
+   }
+   ```
+9. `program.cs`
+    ```
+    builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+    ```
