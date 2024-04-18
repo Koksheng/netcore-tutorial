@@ -355,3 +355,168 @@ builder.Services.AddSwaggerGen(c=>
 
 var app = builder.Build() // <-------- add before this --------
 ```
+
+
+# JWT Issue
+
+[Link to video](https://www.bilibili.com/video/BV1pK41137He?p=151&spm_id_from=pageDriver&vd_source=0db8da3630570b65a3001fb44134ff14)
+
+**Backgound**
+
+User account already been deleted, but JWT unable to terminate / invalid from server immediately or make it expire immediately.
+
+User login from multiple device, diff login using same JWT, might possibly steal by other 
+
+**Solution**:
+
+Add a new field : JWTVersion
+Need to save the JWT's version into DB, then inject version as one of the key-value in JWT payload. Every new request of JWT, will make the JWTVersion upgrade 1 version
+
+1. `MyUser.cs`
+    ```
+    using Microsoft.AspNetCore.Identity;
+
+    namespace Identity框架1
+    {
+        public class MyUser : IdentityUser<long>
+        {
+            public string? WeiXinAccount { get; set; }
+            public long JWTVersion { get; set; }
+        }
+    }
+    ```
+2. `DemoController.cs`
+    ```
+    using Identity框架1;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
+    using Microsoft.IdentityModel.Tokens;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using System.Text;
+
+    namespace JWTWebApp1.Controllers
+    {
+        [Route("api/[controller]/[acitons]")]
+        [ApiController]
+        public class DemoController : ControllerBase
+        {
+            private readonly IOptionsSnapshot<JWTSettings> jwtSettingsOpt;
+            private readonly UserManager<MyUser< userManager;
+
+            public DemoController(IOptionsSnapshot<JWTSettings> jwtSettingsOpt, UserManager<MyUser> userManager)
+            {
+                this.jwtSettingsOpt = jwtSettingsOpt;
+                this.userManager = userManager;
+            }
+
+            [HttpPost]
+            [NotCheckJWTVersion]
+            public async Task<ActionResult<string>> Login(string userName, string password)
+            {
+                var user = await userManager.FindByNameAsync(username);
+                if(user==null)
+                {
+                    return BadRequest("用户名或者密码错误")；
+                }
+                if(await userManager.CheckPasswordAsync(user,password))
+                {
+                    await userManager.ResetAccessFailedCountAsync(user).CheckAsync();
+                    user.JWTVersion++; // !!!
+                    await userManager.UpdateAsync(user); // !!!
+
+                    List<Claim> claims = new List<Claim>();
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+                    claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+                    claims.Add(new Claim("JWTVersion", user.JWTVersion.ToString())); // !!!
+                    var roles = await userManager.GetRolesAsync(user);
+                    foreach(var role in roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                    }
+                    string key = jwtSettingsOpt.Value.SecKey;
+                    DateTime expires = DateTime.Now.AddSeconds(jwtSettingsOpt.Value.ExpireSeconds);
+                    
+                    byte[] secBytes = Encoding.UTF8.GetBytes(key);
+                    var secKey = new SymmetricSecurityKey(secBytes);
+                    var credentials = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256Signature);
+                    var tokenDescriptor = new JwtSecurityToken(claims:claims, expires:expires, signingCredentials:credentials);
+                    string jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+                    return jwt;
+                }
+                else{
+                    await userManager.AccessFailedAsync(user).CheckAsync();
+                    return BadRequest("用户名或者密码错误");
+                }
+            }
+        }
+    }
+    ```
+3. `JWTVersionCheckFilter.cs`
+    ```
+    using Microsoft.AspNetCore.Mvc.Filters;
+    namespace JWT的提前撤回
+    {
+        public class JWTVersionCheckFilter : IAsyncActionFilter
+        {
+            private readonly UserManager<MyUser> userManager;
+            public JWTVersionCheckFilter(UserManager<MyUser> userManager)
+            {
+                this.userManager = userManager;
+            }
+            public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+            {
+                ControllerActionDescriptor? ctrlActionDesc = context.ActionDescriptor as ControllerActionDescriptor;
+                if(ctrlActionDesc==null)
+                {
+                    await next();
+                    return;
+                }
+                if(ctrlActionDesc.MethodInfo.GetCustomAttributes(typeof(NotCheckJWTVersionAttribute),true).Any())
+                {
+                    await next();
+                    return;
+                }
+
+                var claimJWTVer = context.HttpContext.User.FindFirst("JWTVersion");
+                if(claimJWTVer==null)
+                {
+                    context.Result = new ObjectResult("payload中没有JWTVersion"){StatusCode=400};
+                    return;
+                }
+                long jwtVerFromClient = Convert.ToInt64(claimJWTVer.Value);
+                var claimUserId = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                var user = await userManager.FindByIdAsync(claimUserId.Value);
+                if(user==null)
+                {
+                    context.Result = new ObjectResult("user找不到") {StatusCode = 400};
+                    return;
+                }
+                if(user.JWTVersion > jwtVerFromClient)
+                {
+                    context.Result = new ObjectResult("客户端的jwt过时") {StatusCode=400};
+                    return;
+                }
+                await next();
+            }
+        }
+    }
+    ```
+4. `Program.cs`
+    ```
+    builder.Services.Configure<MvcOptions>(opt => {
+        opt.Filters.Add<JWTVersionCheckFilter>();
+    });
+    ```
+5. `NotCheckJWTVersionAttribute.cs`
+    ```
+    namespace JWT的提前撤回
+    {
+        [AttributeUsage(AttributeTargets.Method)]
+        public class NotCheckJWTVersionAttribute : Attribute
+        {
+
+        }
+    }
+    ```
